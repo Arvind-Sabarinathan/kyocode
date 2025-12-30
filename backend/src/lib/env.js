@@ -2,6 +2,7 @@ import { config } from "dotenv";
 
 config({
   path: `.env`,
+  quiet: true,
 });
 
-export const { PORT } = process.env;
+export const { PORT, NODE_ENV, DB_URL } = process.env;
