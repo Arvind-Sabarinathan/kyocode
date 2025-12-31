@@ -5,4 +5,14 @@ config({
   quiet: true,
 });
 
-export const { PORT, NODE_ENV, DB_URL } = process.env;
+export const {
+  PORT,
+  NODE_ENV,
+  DB_URL,
+  CLERK_PUBLISHABLE_KEY,
+  CLERK_SECRET_KEY,
+  INNGEST_EVENT_KEY,
+  INNGEST_SIGNING_KEY,
+  STREAM_API_KEY,
+  STREAM_API_SECRET,
+} = process.env;
