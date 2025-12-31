@@ -15,4 +15,5 @@ export const {
   INNGEST_SIGNING_KEY,
   STREAM_API_KEY,
   STREAM_API_SECRET,
+  CLIENT_URL,
 } = process.env;
