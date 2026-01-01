@@ -11,18 +11,27 @@ const syncUserCreated = inngest.createFunction(
     const { id, email_addresses, first_name, last_name, image_url } =
       event.data;
 
-    await User.create({
-      clerkID: id,
-      name: [first_name, last_name].filter(Boolean).join(" ").trim(),
-      email: email_addresses[0].email_address,
-      profileImage: image_url,
-    });
+    try {
+      await User.findOneAndUpdate(
+        { clerkID: id },
+        {
+          clerkID: id,
+          name: [first_name, last_name].filter(Boolean).join(" ").trim(),
+          email: email_addresses[0].email_address,
+          profileImage: image_url,
+        },
+        { upsert: true, new: true }
+      );
 
-    await upsertStreamUser({
-      id: id,
-      name: [first_name, last_name].filter(Boolean).join(" ").trim(),
-      image: image_url,
-    });
+      await upsertStreamUser({
+        id: id,
+        name: [first_name, last_name].filter(Boolean).join(" ").trim(),
+        image: image_url,
+      });
+    } catch (error) {
+      console.error("Failed to sync created user:", id, error);
+      throw error;
+    }
   }
 );
 
@@ -32,9 +41,14 @@ const syncUserDeleted = inngest.createFunction(
   async ({ event }) => {
     const { id } = event.data;
 
-    await User.deleteOne({ clerkID: id });
+    try {
+      await User.deleteOne({ clerkID: id });
 
-    await deleteStreamUser(id);
+      await deleteStreamUser(id);
+    } catch (error) {
+      console.error("Failed to sync deleted user:", id, error);
+      throw error;
+    }
   }
 );
 
