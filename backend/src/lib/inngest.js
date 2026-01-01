@@ -7,11 +7,11 @@ export const inngest = new Inngest({ id: "kyocode" });
 const syncUserCreated = inngest.createFunction(
   { id: "sync-user-created" },
   { event: "clerk/user.created" },
-  async ({ event }) => {
+  async ({ event, step }) => {
     const { id, email_addresses, first_name, last_name, image_url } =
       event.data;
 
-    try {
+    await step.run("create-user-in-db", async () => {
       await User.findOneAndUpdate(
         { clerkID: id },
         {
@@ -22,33 +22,31 @@ const syncUserCreated = inngest.createFunction(
         },
         { upsert: true, new: true }
       );
+    });
 
+    await step.run("upsert-user-in-stream", async () => {
       await upsertStreamUser({
         id: id,
         name: [first_name, last_name].filter(Boolean).join(" ").trim(),
         image: image_url,
       });
-    } catch (error) {
-      console.error("Failed to sync created user:", id, error);
-      throw error;
-    }
+    });
   }
 );
 
 const syncUserDeleted = inngest.createFunction(
   { id: "sync-user-deleted" },
   { event: "clerk/user.deleted" },
-  async ({ event }) => {
+  async ({ event, step }) => {
     const { id } = event.data;
 
-    try {
+    await step.run("delete-user-from-db", async () => {
       await User.deleteOne({ clerkID: id });
+    });
 
+    await step.run("delete-user-from-stream", async () => {
       await deleteStreamUser(id);
-    } catch (error) {
-      console.error("Failed to sync deleted user:", id, error);
-      throw error;
-    }
+    });
   }
 );
 
