@@ -5,6 +5,7 @@ import { clerkMiddleware } from "@clerk/express";
 import { PORT, NODE_ENV, CLIENT_URL } from "./lib/env.js";
 import { connectDB } from "./lib/db.js";
 import { inngest, functions } from "./lib/inngest.js";
+import chatRouter from "./routes/chat.route.js";
 
 const app = express();
 
@@ -15,6 +16,9 @@ app.use(cors({ origin: CLIENT_URL, credentials: true }));
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
 app.use(clerkMiddleware());
+
+// Routes
+app.use("/api/chat", chatRouter);
 
 app.get("/", (req, res) => {
   res.status(200).json({
