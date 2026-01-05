@@ -5,6 +5,7 @@ const sessionSchema = new mongoose.Schema(
     problem: {
       type: String,
       required: true,
+      maxLength: 500,
     },
     difficulty: {
       type: String,
@@ -30,6 +31,7 @@ const sessionSchema = new mongoose.Schema(
     callID: {
       type: String,
       required: true,
+      unique: true,
     },
   },
   {

@@ -22,8 +22,8 @@ export const createSession = async (req, res) => {
     // generate a unique call identifier
     const callID = `session_${crypto.randomUUID()}`;
 
-    // create session record in database
-    const session = await Session.create({
+    // prepare session object (generate _id without saving to DB yet)
+    const session = new Session({
       problem,
       difficulty,
       host: userID,
@@ -51,6 +51,9 @@ export const createSession = async (req, res) => {
 
     await channel.create();
 
+    // save session record in database
+    await session.save();
+
     // return newly created session
     return res.status(201).json({ session });
   } catch (error) {
@@ -63,7 +66,7 @@ export const getAllActiveSessions = async (_, res) => {
   try {
     // fetch latest active sessions
     const sessions = await Session.find({ status: "active" })
-      .populate("host", "clerkID name email profileImage")
+      .populate("host", "clerkID name profileImage")
       .sort({ createdAt: -1 })
       .limit(20);
 
@@ -105,6 +108,11 @@ export const getAllCompletedSessions = async (req, res) => {
 
 export const getSessionById = async (req, res) => {
   try {
+    // ensure user is authenticated
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     // extract session id from params
     const { id } = req.params;
 
@@ -116,6 +124,15 @@ export const getSessionById = async (req, res) => {
     // handle missing session
     if (!session) {
       return res.status(404).json({ message: "Session not found" });
+    }
+
+    // ensure user is authorized (host or participant)
+    const userID = req.user._id.toString();
+    const isHost = session.host._id.toString() === userID;
+    const isParticipant = session.participant?._id.toString() === userID;
+
+    if (!isHost && !isParticipant) {
+      return res.status(403).json({ message: "Forbidden" });
     }
 
     // return session details
