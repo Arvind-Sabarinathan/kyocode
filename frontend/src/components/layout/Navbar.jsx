@@ -32,6 +32,10 @@ const Navbar = () => {
   ];
 
   const { user } = useUser();
+  const displayName =
+    [user?.firstName, user?.lastName].filter(Boolean).join(" ") ||
+    user?.username ||
+    "";
 
   return (
     <div className="pointer-events-none fixed top-0 right-0 left-0 z-50 flex w-full justify-center">
@@ -92,7 +96,7 @@ const Navbar = () => {
             <SignedIn>
               <div className="flex items-center gap-3">
                 <span className="text-base-content/80 font-bold">
-                  {user?.firstName + " " + user?.lastName || user?.username}
+                  {displayName}
                 </span>
                 <UserButton />
               </div>
@@ -136,7 +140,7 @@ const Navbar = () => {
                 <SignedIn>
                   <div className="flex items-center gap-3">
                     <span className="text-base-content/80 font-bold">
-                      {user?.firstName + " " + user?.lastName || user?.username}
+                      {displayName}
                     </span>
                     <UserButton />
                   </div>

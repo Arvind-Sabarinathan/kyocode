@@ -12,6 +12,8 @@ const Doodle = ({
 }) => {
   return (
     <motion.div
+      aria-hidden="true"
+      role="presentation"
       className={`pointer-events-none absolute z-0 font-mono text-sm font-black select-none ${className} text-base-content/10`}
       style={{
         top,
@@ -19,7 +21,7 @@ const Doodle = ({
         right,
         bottom,
       }}
-      initial={{ opacity: 0, rotate: rotate }}
+      initial={{ opacity: 0, rotate: 0 }}
       whileInView={{ opacity: 1, rotate: rotate }}
       viewport={{ once: true }}
       transition={{ duration: 1, delay }}

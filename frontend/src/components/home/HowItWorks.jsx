@@ -92,7 +92,7 @@ const HowItWorks = () => {
 
             {/* The Active Flow Line */}
             <motion.div
-              className="bg-primary absolute top-6 left-8.75 z-0 w-0.5 origin-top shadow-[0_0_10px_2px_rgba(var(--primary),0.5)]"
+              className="bg-primary absolute top-6 left-8.75 z-0 w-0.5 origin-top shadow-[0_0_10px_2px_rgba(var(--color-primary),0.5)]"
               animate={{
                 height: `${Math.min(((activeStep - 1) / (steps.length - 1)) * 100, 100)}%`,
               }}
@@ -116,7 +116,7 @@ const HowItWorks = () => {
                         className={clsx(
                           "flex h-17.5 w-17.5 items-center justify-center rounded-2xl border-2 transition-all duration-500",
                           isCurrent
-                            ? "bg-base-100 border-primary text-primary shadow-[0_0_15px_-3px_rgba(var(--primary),0.4)]"
+                            ? "bg-base-100 border-primary text-primary shadow-[0_0_15px_-3px_rgba(var(--color-primary),0.4)]"
                             : isActive
                               ? "bg-base-100 border-primary/50 text-base-content"
                               : "bg-base-100 border-base-content/10 text-base-content/30",

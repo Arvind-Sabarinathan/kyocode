@@ -7,7 +7,7 @@ const ScrollToTop = () => {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      // Show if scrolled more than 500px AND near the bottom
+      // Show if scrolled more than 500px
       if (window.scrollY > 500) {
         setIsVisible(true);
       } else {
@@ -15,7 +15,8 @@ const ScrollToTop = () => {
       }
     };
 
-    window.addEventListener("scroll", toggleVisibility);
+    toggleVisibility();
+    window.addEventListener("scroll", toggleVisibility, { passive: true });
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
@@ -34,8 +35,9 @@ const ScrollToTop = () => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={scrollToTop}
-          className="bg-primary text-primary-content hover:bg-primary/90 focus:ring-primary fixed right-8 bottom-8 z-50 rounded-full p-3 shadow-lg transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none"
+          className="bg-primary text-primary-content hover:bg-primary/90 focus:ring-primary fixed right-8 bottom-8 z-50 cursor-pointer rounded-full p-3 shadow-lg transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none"
           aria-label="Scroll to top"
+          type="button"
         >
           <ArrowUp size={24} />
         </motion.button>

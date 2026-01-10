@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Clock, Briefcase } from "lucide-react";
+import { Link } from "react-router";
 import Doodle from "../common/Doodle";
 
 const problems = [
@@ -162,6 +163,11 @@ const ProblemShowcase = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.5 }}
           >
+            <Link
+              to="/problems"
+              className="absolute inset-0"
+              aria-label="Explore problem library"
+            />
             {/* Shine effect for CTA */}
             <div className="pointer-events-none absolute -inset-full -translate-x-full -rotate-45 bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-full" />
 

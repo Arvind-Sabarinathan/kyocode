@@ -99,7 +99,10 @@ const PlatformPhilosophy = () => {
           </SignedIn>
           <SignedOut>
             <SignInButton mode="modal">
-              <button className="group bg-primary text-primary-content hover:bg-primary/90 focus-visible:outline-primary hover:shadow-primary/25 flex cursor-pointer items-center gap-3 rounded-full px-10 py-4 text-xl font-semibold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-95">
+              <button
+                type="button"
+                className="group bg-primary text-primary-content hover:bg-primary/90 focus-visible:outline-primary hover:shadow-primary/25 flex cursor-pointer items-center gap-3 rounded-full px-10 py-4 text-xl font-semibold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-95"
+              >
                 Become a KyoCoder
                 <ArrowRight
                   size={20}
